@@ -3,46 +3,35 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskAttachmentCreateRequest;
+use App\Http\Requests\TaskAttachmentUpdateRequest;
+use App\Models\Task;
+use App\Models\TaskAttachment;
 use Illuminate\Http\Request;
 
 class TaskAttachmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Task $task)
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(TaskAttachmentCreateRequest $request, Task $task)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Task $task, TaskAttachment $attachment)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(TaskAttachmentUpdateRequest $request, Task $task, TaskAttachment $attachment)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Task $task, TaskAttachment $attachment)
     {
         //
     }
