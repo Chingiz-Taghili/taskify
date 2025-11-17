@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,7 @@ class Task extends Model
 
     protected $fillable = [
         'user_id', 'client_id', 'project_id', 'category_id',
-        'title', 'description', 'parent_task_id', 'due_date',
+        'title', 'description', 'status', 'parent_task_id', 'due_date',
     ];
 
     public function user(): BelongsTo
@@ -42,6 +43,11 @@ class Task extends Model
         return $this->belongsTo(User::class, 'assigned_by');
     }
 
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(TaskAttachment::class)->orderBy('sort_order');
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Task::class, 'parent_task_id');
@@ -50,5 +56,19 @@ class Task extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Task::class, 'parent_task_id');
+    }
+
+    protected function casts(): array
+    {
+        return ['status' => TaskStatus::class];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function ($task) {
+            $task->assigned_by = $task->assigned_by ?? auth()->id();
+            $task->assigned_at = now();
+            $task->status = $task->status ?? TaskStatus::TODO->value;
+        });
     }
 }

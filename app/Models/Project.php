@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,10 +13,7 @@ class Project extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'name', 'client_id',
-        'description', 'cover_photo',
-    ];
+    protected $fillable = ['name', 'client_id', 'description', 'cover_photo', 'status',];
 
     public function client(): BelongsTo
     {
@@ -25,5 +23,10 @@ class Project extends Model
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+
+    protected function casts(): array
+    {
+        return ['status' => ProjectStatus::class];
     }
 }

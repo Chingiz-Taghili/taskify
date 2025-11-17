@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class User extends Authenticatable
 {
@@ -33,5 +34,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            if ($user->email === env('SUPERADMIN_EMAIL')){
+                throw new HttpException(403, 'Root superadmin cannot be deleted.');
+            }
+        });
     }
 }
