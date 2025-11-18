@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskAssignRequest;
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskStatusRequest;
 use App\Http\Requests\TaskUpdateRequest;
@@ -14,16 +15,16 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with(['user', 'client', 'project',
-            'category', 'assignedBy', 'attachments', 'parent', 'children'])->get();
+        $tasks = Task::with(['users', 'client', 'project',
+            'category', 'attachments', 'parent', 'children'])->get();
         return TaskResource::collection($tasks)->additional(['success' => true]);
     }
 
     public function store(TaskCreateRequest $request)
     {
         $task = Task::create($request->validated());
-        return (new TaskResource($task->load(['user', 'client',
-            'project', 'category', 'assignedBy', 'attachments', 'parent', 'children'])))
+        return (new TaskResource($task->load(['users', 'client',
+            'project', 'category', 'attachments', 'parent', 'children'])))
             ->additional(['success' => true, 'message' => 'Task created successfully'])
             ->response()->setStatusCode(201);
     }
@@ -32,16 +33,16 @@ class TaskController extends Controller
     {
         $this->authorize('view', $task);
 
-        return (new TaskResource($task->load(['user', 'client',
-            'project', 'category', 'assignedBy', 'attachments', 'parent', 'children'])))
+        return (new TaskResource($task->load(['users', 'client',
+            'project', 'category', 'attachments', 'parent', 'children'])))
             ->additional(['success' => true]);
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
         $task->update($request->validated());
-        return (new TaskResource($task->load(['user', 'client',
-            'project', 'category', 'assignedBy', 'attachments', 'parent', 'children'])))
+        return (new TaskResource($task->load(['users', 'client',
+            'project', 'category', 'attachments', 'parent', 'children'])))
             ->additional(['success' => true, 'message' => 'Task updated successfully']);
     }
 
@@ -51,13 +52,29 @@ class TaskController extends Controller
         return response()->json(['success' => true, 'message' => 'Task deleted successfully']);
     }
 
+    public function assign(TaskAssignRequest $request, Task $task)
+    {
+        $task->users()->attach($request->validated());
+        return (new TaskResource($task->load(['users', 'client',
+            'project', 'category', 'attachments', 'parent', 'children'])))
+            ->additional(['success' => true, 'message' => 'Task assigned successfully']);
+    }
+
+    public function unassign(TaskAssignRequest $request, Task $task)
+    {
+        $task->users()->detach($request->validated());
+        return (new TaskResource($task->load(['users', 'client',
+            'project', 'category', 'attachments', 'parent', 'children'])))
+            ->additional(['success' => true, 'message' => 'Task unassigned successfully']);
+    }
+
     public function changeStatus(TaskStatusRequest $request, Task $task)
     {
         $this->authorize('changeStatus', $task);
 
         $task->update($request->validated());
-        return (new TaskResource($task->load(['user', 'client',
-            'project', 'category', 'assignedBy', 'attachments', 'parent', 'children'])))
+        return (new TaskResource($task->load(['users', 'client',
+            'project', 'category', 'attachments', 'parent', 'children'])))
             ->additional(['success' => true, 'message' => 'Task status updated successfully']);
     }
 }

@@ -6,6 +6,7 @@ use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,13 +15,14 @@ class Task extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'client_id', 'project_id', 'category_id',
-        'title', 'description', 'status', 'parent_task_id', 'due_date',
+        'client_id', 'project_id', 'category_id', 'title',
+        'description', 'status', 'parent_task_id', 'due_date',
     ];
 
-    public function user(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'task_user')
+            ->using(TaskUser::class)->withPivot(['assigned_by', 'assigned_at'])->withTimestamps();
     }
 
     public function client(): BelongsTo
@@ -36,11 +38,6 @@ class Task extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function assignedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'assigned_by');
     }
 
     public function attachments(): HasMany
@@ -66,9 +63,7 @@ class Task extends Model
     protected static function booted(): void
     {
         static::creating(function ($task) {
-            $task->assigned_by = $task->assigned_by ?? auth()->id();
-            $task->assigned_at = now();
-            $task->status = $task->status ?? TaskStatus::TODO->value;
+            $task->status ??= TaskStatus::TODO->value;
         });
     }
 }

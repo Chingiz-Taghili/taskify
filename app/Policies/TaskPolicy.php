@@ -21,7 +21,8 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $user->hasRole('admin') || $user->id === $task->user_id;
+        return $user->hasRole('admin') ||
+            $task->users()->where('users.id', $user->id)->exists();
     }
 
     /**
@@ -66,6 +67,7 @@ class TaskPolicy
 
     public function changeStatus(User $user, Task $task): bool
     {
-        return $user->hasRole('admin') || $user->id === $task->user_id;
+        return $user->hasRole('admin') ||
+            $task->users()->where('users.id', $user->id)->exists();
     }
 }

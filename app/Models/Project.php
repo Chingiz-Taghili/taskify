@@ -29,4 +29,11 @@ class Project extends Model
     {
         return ['status' => ProjectStatus::class];
     }
+
+    protected static function booted(): void
+    {
+        static::creating(function ($project) {
+            $project->status ??= ProjectStatus::PLANNED->value;
+        });
+    }
 }

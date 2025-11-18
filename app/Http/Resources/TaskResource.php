@@ -11,15 +11,13 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => new UserResource($this->whenLoaded('user')),
+            'users' => UserResource::collection($this->whenLoaded('users')),
             'client' => new ClientResource($this->whenLoaded('client')),
             'project' => new ProjectResource($this->whenLoaded('project')),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
-            'assigned_by' => new UserResource($this->whenLoaded('assignedBy')),
-            'assigned_at' => $this->assigned_at,
             'parent' => new TaskResource($this->whenLoaded('parent')),
             'children' => TaskResource::collection($this->whenLoaded('children')),
             'due_date' => $this->due_date,

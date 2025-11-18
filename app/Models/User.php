@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,9 +24,10 @@ class User extends Authenticatable
 
     protected $hidden = ['password', 'remember_token',];
 
-    public function tasks(): HasMany
+    public function tasks(): BelongsToMany
     {
-        return $this->hasMany(Task::class);
+        return $this->belongsToMany(Task::class, 'task_user')
+            ->using(TaskUser::class)->withPivot(['assigned_by', 'assigned_at'])->withTimestamps();
     }
 
     protected function casts(): array
@@ -39,7 +41,7 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::deleting(function (User $user) {
-            if ($user->email === env('SUPERADMIN_EMAIL')){
+            if ($user->email === env('SUPERADMIN_EMAIL')) {
                 throw new HttpException(403, 'Root superadmin cannot be deleted.');
             }
         });

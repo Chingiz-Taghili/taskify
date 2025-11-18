@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('projects', ProjectController::class);
         Route::put('projects/{project}/status', [ProjectController::class, 'changeStatus']);
         Route::apiResource('tasks', TaskController::class)->except('show');
+        Route::post('tasks/{task}/assign', [TaskController::class, 'assign']);
+        Route::delete('tasks/{task}/unassign', [TaskController::class, 'unassign']);
         Route::apiResource('tasks.attachments', TaskAttachmentController::class)
             ->except(['index', 'show']);
     });

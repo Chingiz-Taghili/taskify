@@ -14,7 +14,6 @@ class TaskUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['sometimes', 'integer', 'exists:users,id'],
             'client_id' => ['sometimes', 'nullable', 'integer', 'exists:clients,id'],
             'project_id' => ['sometimes', 'nullable', 'integer', 'exists:projects,id'],
             'category_id' => ['sometimes', 'nullable', 'integer', 'exists:categories,id'],

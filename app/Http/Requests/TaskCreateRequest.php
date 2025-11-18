@@ -14,7 +14,6 @@ class TaskCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
             'client_id' => ['nullable', 'integer', 'exists:clients,id'],
             'project_id' => ['nullable', 'integer', 'exists:projects,id'],
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],

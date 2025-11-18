@@ -12,7 +12,6 @@ return new class extends Migration {
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('client_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('project_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
@@ -20,12 +19,19 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->enum('status', ['todo', 'in_progress',
                 'review', 'done', 'blocked', 'on_hold'])->default('todo');
-            $table->foreignId('assigned_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->timestamp('assigned_at');
             $table->foreignId('parent_task_id')->nullable()->constrained('tasks')->cascadeOnDelete();
             $table->dateTime('due_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create('task_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('task_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('assigned_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('assigned_at');
+            $table->timestamps();
         });
     }
 
@@ -34,6 +40,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        Schema::dropIfExists('task_user');
         Schema::dropIfExists('tasks');
     }
 };
