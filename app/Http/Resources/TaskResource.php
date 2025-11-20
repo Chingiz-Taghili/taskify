@@ -21,6 +21,10 @@ class TaskResource extends JsonResource
             'parent' => new TaskResource($this->whenLoaded('parent')),
             'children' => TaskResource::collection($this->whenLoaded('children')),
             'due_date' => $this->due_date,
+            'assignment' => $this->whenPivotLoaded('task_user', [
+                'assigned_by' => new UserResource($this->pivot->assignedBy),
+                'assigned_at' => $this->pivot->assigned_at,
+            ]),
             'created_at' => $this->created_at,
         ];
     }

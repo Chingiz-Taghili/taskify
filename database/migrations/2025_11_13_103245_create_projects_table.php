@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ProjectStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +17,7 @@ return new class extends Migration {
             $table->foreignId('client_id')->nullable()->constrained()->nullOnDelete();
             $table->text('description')->nullable();
             $table->string('cover_photo')->nullable();
-            $table->enum('status', ['planned', 'active',
-                'on_hold', 'completed', 'cancelled'])->default('planned');
+            $table->string('status')->default(ProjectStatus::PLANNED->value);
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['client_id', 'name']);

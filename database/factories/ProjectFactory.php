@@ -17,11 +17,9 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
-        $client = Client::inRandomOrder()->first();
-
         return [
             'name' => $this->faker->words(2, true),
-            'client_id' => $client->id,
+            'client_id' => Client::inRandomOrder()->value('id'),
             'description' => $this->faker->sentence(),
             'cover_photo' => $this->faker->imageUrl(),
         ];

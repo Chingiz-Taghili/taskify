@@ -22,7 +22,7 @@ class Task extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'task_user')
-            ->using(TaskUser::class)->withPivot(['assigned_by', 'assigned_at'])->withTimestamps();
+            ->using(TaskUser::class)->withPivot(['assigned_by', 'assigned_at']);
     }
 
     public function client(): BelongsTo

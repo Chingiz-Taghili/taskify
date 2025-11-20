@@ -15,9 +15,9 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::firstOrCreate(['name' => 'Backend', 'description' => 'Backend']);
-        Category::firstOrCreate(['name' => 'Frontend', 'description' => 'Frontend']);
-        Category::firstOrCreate(['name' => 'Design', 'description' => 'Design']);
-        Category::firstOrCreate(['name' => 'Media', 'description' => 'Media']);
+        Category::firstOrCreate(['name' => 'Backend'], ['description' => 'Backend']);
+        Category::firstOrCreate(['name' => 'Frontend'], ['description' => 'Frontend']);
+        Category::firstOrCreate(['name' => 'Design'], ['description' => 'Design']);
+        Category::firstOrCreate(['name' => 'Media'], ['description' => 'Media']);
     }
 }

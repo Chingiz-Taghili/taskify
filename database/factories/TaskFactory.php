@@ -20,14 +20,10 @@ class TaskFactory extends Factory
      */
     public function definition(): array
     {
-        $client = Client::inRandomOrder()->first();
-        $project = Project::inRandomOrder()->first();
-        $category = Category::inRandomOrder()->first();
-
         return [
-            'client_id' => $client ? $client->id : null,
-            'project_id' => $project ? $project->id : null,
-            'category_id' => $category ? $category->id : null,
+            'client_id' => Client::inRandomOrder()->value('id'),
+            'project_id' => Project::inRandomOrder()->value('id'),
+            'category_id' => Category::inRandomOrder()->value('id'),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
             'due_date' => $this->faker->date(),
@@ -37,7 +33,7 @@ class TaskFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function ($task) {
-            $task->users()->attach((User::inRandomOrder()->first())->id);
+            $task->users()->attach(User::inRandomOrder()->value('id'));
         });
     }
 }

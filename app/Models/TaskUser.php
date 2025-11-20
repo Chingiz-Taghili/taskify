@@ -29,6 +29,11 @@ class TaskUser extends Pivot
         return $this->belongsTo(User::class, 'assigned_by');
     }
 
+    protected function casts(): array
+    {
+        return ['assigned_at' => 'datetime'];
+    }
+
     protected static function booted(): void
     {
         static::creating(function (TaskUser $pivot) {

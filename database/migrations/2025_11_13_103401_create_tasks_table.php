@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,8 +18,7 @@ return new class extends Migration {
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('status', ['todo', 'in_progress',
-                'review', 'done', 'blocked', 'on_hold'])->default('todo');
+            $table->string('status')->default(TaskStatus::TODO->value);
             $table->foreignId('parent_task_id')->nullable()->constrained('tasks')->cascadeOnDelete();
             $table->dateTime('due_date')->nullable();
             $table->timestamps();
