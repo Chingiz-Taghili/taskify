@@ -70,7 +70,7 @@ class UserController extends Controller
 
     public function assignRole(User $user, Role $role)
     {
-        if ($user->email === env('SUPERADMIN_EMAIL')) {
+        if ($user->is_root) {
             return response()->json(['success' => false,
                 'message' => 'Root superadmin role cannot be modified.'], 403);
         }
@@ -81,7 +81,7 @@ class UserController extends Controller
 
     public function removeRole(User $user, Role $role)
     {
-        if ($user->email === env('SUPERADMIN_EMAIL')) {
+        if ($user->is_root) {
             return response()->json(['success' => false,
                 'message' => 'Root superadmin role cannot be modified.'], 403);
         }

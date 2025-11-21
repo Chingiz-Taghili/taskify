@@ -35,13 +35,20 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_root' => 'boolean',
         ];
     }
 
     protected static function booted(): void
     {
+        static::updating(function (User $user) {
+            if ($user->is_root && $user->isDirty('is_root')) {
+                throw new HttpException(403, 'Root superadmin flag cannot be modified.');
+            }
+        });
+
         static::deleting(function (User $user) {
-            if ($user->email === env('SUPERADMIN_EMAIL')) {
+            if ($user->is_root) {
                 throw new HttpException(403, 'Root superadmin cannot be deleted.');
             }
         });

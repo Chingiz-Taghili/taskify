@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('profile_photo')->nullable();
             $table->string('job_title')->nullable();
             $table->string('phone_number')->nullable();
+            $table->boolean('is_root')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

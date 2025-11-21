@@ -17,15 +17,18 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Create Superadmin
-        $superadmin = User::firstOrCreate([
-            'name' => 'Super', 'surname' => 'Admin',
-            'email' => env('SUPERADMIN_EMAIL', 'superadmin@example.com'),
-            'email_verified_at' => now(),
-            'password' => Hash::make(env('SUPERADMIN_PASSWORD', 'ChangeMe123!')),
-            'profile_photo' => 'superadmin.png',
-            'job_title' => 'Company Owner',
-            'phone_number' => '+99812345678',
-        ]);
+        $superadmin = User::firstOrCreate(
+            ['email' => env('SUPERADMIN_EMAIL', 'superadmin@example.com')],
+            [
+                'name' => 'Super', 'surname' => 'Admin',
+                'email_verified_at' => now(),
+                'password' => Hash::make(env('SUPERADMIN_PASSWORD', 'ChangeMe123!')),
+                'profile_photo' => 'superadmin.png',
+                'job_title' => 'Company Owner',
+                'phone_number' => '+99812345678',
+            ]);
+        $superadmin->is_root = true;
+        $superadmin->save();
         $superadmin->assignRole('superadmin');
 
         // Create Admins
@@ -54,24 +57,32 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($admins as $data) {
-            $admin = User::firstOrCreate(array_merge($data, [
-                'email_verified_at' => now(),
-                'password' => Hash::make('12345678'),
-                'phone_number' => '+99812345678',]));
+            $admin = User::firstOrCreate(
+                ['email' => $data['email']],
+                [
+                    'name' => $data['name'],
+                    'surname' => $data['surname'],
+                    'profile_photo' => $data['profile_photo'],
+                    'job_title' => $data['job_title'],
+                    'email_verified_at' => now(),
+                    'password' => Hash::make('12345678'),
+                    'phone_number' => '+99812345678',
+                ]);
             $admin->assignRole('admin');
         }
 
         // Create User
-        $user = User::firstOrCreate([
-            'name' => 'Nicat',
-            'surname' => 'Paşayev',
-            'email' => 'nicat@mail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('12345678'),
-            'profile_photo' => 'nicat.png',
-            'job_title' => 'SQL Developer',
-            'phone_number' => '+99812345678',
-        ]);
+        $user = User::firstOrCreate(
+            ['email' => 'nicat@mail.com'],
+            [
+                'name' => 'Nicat',
+                'surname' => 'Paşayev',
+                'email_verified_at' => now(),
+                'password' => Hash::make('12345678'),
+                'profile_photo' => 'nicat.png',
+                'job_title' => 'SQL Developer',
+                'phone_number' => '+99812345678',
+            ]);
         $user->assignRole('user');
     }
 }

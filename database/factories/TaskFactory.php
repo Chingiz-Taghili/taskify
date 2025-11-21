@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\TaskStatus;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\Project;
+use App\Models\TaskUser;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,6 +28,7 @@ class TaskFactory extends Factory
             'category_id' => Category::inRandomOrder()->value('id'),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
+            'status' => TaskStatus::TODO->value,
             'due_date' => $this->faker->date(),
         ];
     }
@@ -33,7 +36,9 @@ class TaskFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function ($task) {
-            $task->users()->attach(User::inRandomOrder()->value('id'));
+            $userId = User::inRandomOrder()->value('id');
+            TaskUser::create(['task_id' => $task->id,
+                'user_id' => $userId, 'assigned_by' => 1, 'assigned_at' => now(),]);
         });
     }
 }

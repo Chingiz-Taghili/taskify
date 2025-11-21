@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProjectStatus;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,6 +23,7 @@ class ProjectFactory extends Factory
             'client_id' => Client::inRandomOrder()->value('id'),
             'description' => $this->faker->sentence(),
             'cover_photo' => $this->faker->imageUrl(),
+            'status' => ProjectStatus::PLANNED->value,
         ];
     }
 }
