@@ -12,9 +12,27 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::with(['client', 'tasks'])->get();
+        $perPage = $request->integer('per_page', 10);
+        $sortBy = $request->query('sort_by', 'id');
+        $sortOrder = $request->query('sort_order', 'asc');
+
+        $projects = Project::with(['client', 'tasks'])
+            // Filters
+            ->when($request->query('client_id'),
+                fn($q, $client_id) => $q->where('client_id', $client_id))
+            ->when($request->query('status'),
+                fn($q, $status) => $q->where('status', $status))
+            // Global search
+            ->when($request->query('search'), fn($q, $search) => $q
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                }))
+            // Sort
+            ->orderBy($sortBy, $sortOrder)->paginate($perPage)->appends($request->query());
+
         return ProjectResource::collection($projects)->additional(['success' => true]);
     }
 

@@ -11,9 +11,22 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with(['tasks'])->get();
+        $perPage = $request->integer('per_page', 10);
+        $sortBy = $request->query('sort_by', 'id');
+        $sortOrder = $request->query('sort_order', 'asc');
+
+        $categories = Category::with(['tasks'])
+            // Global search
+            ->when($request->query('search'), fn($q, $search) => $q
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                }))
+            // Sort
+            ->orderBy($sortBy, $sortOrder)->paginate($perPage)->appends($request->query());
+
         return CategoryResource::collection($categories)->additional(['success' => true]);
     }
 

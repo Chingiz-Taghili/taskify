@@ -13,10 +13,36 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->integer('per_page', 10);
+        $sortBy = $request->query('sort_by', 'id');
+        $sortOrder = $request->query('sort_order', 'asc');
+
         $tasks = Task::with(['users', 'client', 'project',
-            'category', 'attachments', 'parent', 'children'])->get();
+            'category', 'attachments', 'parent', 'children'])
+            // Filters
+            ->when($request->query('user_id'),
+                fn($q, $user_id) => $q->whereHas('users', fn($u) => $u->where('id', $user_id)))
+            ->when($request->query('client_id'),
+                fn($q, $client_id) => $q->where('client_id', $client_id))
+            ->when($request->query('project_id'),
+                fn($q, $project_id) => $q->where('project_id', $project_id))
+            ->when($request->query('category_id'),
+                fn($q, $category_id) => $q->where('category_id', $category_id))
+            ->when($request->query('parent_task_id'),
+                fn($q, $parent_task_id) => $q->where('parent_task_id', $parent_task_id))
+            ->when($request->query('status'),
+                fn($q, $status) => $q->where('status', $status))
+            // Global search
+            ->when($request->query('search'), fn($q, $search) => $q
+                ->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                }))
+            // Sort
+            ->orderBy($sortBy, $sortOrder)->paginate($perPage)->appends($request->query());
+
         return TaskResource::collection($tasks)->additional(['success' => true]);
     }
 

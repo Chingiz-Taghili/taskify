@@ -11,9 +11,22 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::with(['projects', 'tasks'])->get();
+        $perPage = $request->integer('per_page', 10);
+        $sortBy = $request->query('sort_by', 'id');
+        $sortOrder = $request->query('sort_order', 'asc');
+
+        $clients = Client::with(['projects', 'tasks'])
+            // Global search
+            ->when($request->query('search'), fn($q, $search) => $q
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('notes', 'like', "%{$search}%");
+                }))
+            // Sort
+            ->orderBy($sortBy, $sortOrder)->paginate($perPage)->appends($request->query());
+
         return ClientResource::collection($clients)->additional(['success' => true]);
     }
 
