@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, EagerLoadPivotTrait;
 
     protected $fillable = [
         'client_id', 'project_id', 'category_id', 'title',
@@ -21,8 +22,8 @@ class Task extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'task_user')
-            ->using(TaskUser::class)->withPivot(['assigned_by', 'assigned_at']);
+        return $this->belongsToMany(User::class, 'task_user')->using(
+            TaskUser::class)->withPivot(['assigned_by', 'assigned_at'])->as('assignment');
     }
 
     public function client(): BelongsTo

@@ -12,7 +12,7 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'client' => new ClientResource($this->whenLoaded('client')),
+            'client' => ClientResource::make($this->whenLoaded('client')),
             'description' => $this->description,
             'cover_photo' => $this->cover_photo,
             'status' => $this->status,

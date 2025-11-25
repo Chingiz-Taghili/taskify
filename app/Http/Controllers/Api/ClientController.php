@@ -33,20 +33,20 @@ class ClientController extends Controller
     public function store(ClientCreateRequest $request)
     {
         $client = Client::create($request->validated());
-        return (new ClientResource($client->load(['projects', 'tasks'])))
+        return ClientResource::make($client->load(['projects', 'tasks']))
             ->additional(['success' => true, 'message' => 'Client created successfully'])
             ->response()->setStatusCode(201);
     }
 
     public function show(Client $client)
     {
-        return (new ClientResource($client->load(['projects', 'tasks'])))->additional(['success' => true]);
+        return ClientResource::make($client->load(['projects', 'tasks']))->additional(['success' => true]);
     }
 
     public function update(ClientUpdateRequest $request, Client $client)
     {
         $client->update($request->validated());
-        return (new ClientResource($client->load(['projects', 'tasks'])))
+        return ClientResource::make($client->load(['projects', 'tasks']))
             ->additional(['success' => true, 'message' => 'Client updated successfully']);
     }
 

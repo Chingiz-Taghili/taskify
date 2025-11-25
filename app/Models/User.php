@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles, EagerLoadPivotTrait;
 
     protected $fillable = [
         'name', 'surname', 'email', 'password',
@@ -26,8 +27,8 @@ class User extends Authenticatable
 
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'task_user')
-            ->using(TaskUser::class)->withPivot(['assigned_by', 'assigned_at']);
+        return $this->belongsToMany(Task::class, 'task_user')->using(
+            TaskUser::class)->withPivot(['assigned_by', 'assigned_at'])->as('assignment');
     }
 
     protected function casts(): array

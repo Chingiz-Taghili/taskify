@@ -19,10 +19,11 @@ class UserResource extends JsonResource
             'phone_number' => $this->phone_number,
             'roles' => $this->getRoleNames(),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
-            'assignment' => $this->whenPivotLoaded('task_user', function () {
+            'assignment' => $this->whenPivotLoadedAs('assignment', 'task_user', function () {
                 return [
-                    'assigned_by' => new UserResource($this->pivot->assignedBy),
-                    'assigned_at' => $this->pivot->assigned_at,];
+                    'assigned_by' => $this->assignment->relationLoaded('assignedBy')
+                        ? UserResource::make($this->assignment->assignedBy) : null,
+                    'assigned_at' => $this->assignment->assigned_at,];
             }),
             'created_at' => $this->created_at,
         ];

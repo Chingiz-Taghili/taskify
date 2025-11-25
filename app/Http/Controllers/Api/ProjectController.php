@@ -39,20 +39,20 @@ class ProjectController extends Controller
     public function store(ProjectCreateRequest $request)
     {
         $project = Project::create($request->validated());
-        return (new ProjectResource($project->load(['client', 'tasks'])))
+        return ProjectResource::make($project->load(['client', 'tasks']))
             ->additional(['success' => true, 'message' => 'Project created successfully'])
             ->response()->setStatusCode(201);
     }
 
     public function show(Project $project)
     {
-        return (new ProjectResource($project->load(['client', 'tasks'])))->additional(['success' => true]);
+        return ProjectResource::make($project->load(['client', 'tasks']))->additional(['success' => true]);
     }
 
     public function update(ProjectUpdateRequest $request, Project $project)
     {
         $project->update($request->validated());
-        return (new ProjectResource($project->load(['client', 'tasks'])))
+        return ProjectResource::make($project->load(['client', 'tasks']))
             ->additional(['success' => true, 'message' => 'Project updated successfully']);
     }
 
@@ -65,7 +65,7 @@ class ProjectController extends Controller
     public function changeStatus(ProjectStatusRequest $request, Project $project)
     {
         $project->update($request->validated());
-        return (new ProjectResource($project->load(['client', 'tasks'])))
+        return ProjectResource::make($project->load(['client', 'tasks']))
             ->additional(['success' => true, 'message' => 'Project status updated successfully']);
     }
 }

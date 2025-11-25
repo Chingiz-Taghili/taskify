@@ -11,7 +11,7 @@ class TaskAttachmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'task' => new TaskResource($this->whenLoaded('task')),
+            'task' => TaskResource::make($this->whenLoaded('task')),
             'file_path' => $this->file_path,
             'mime_type' => $this->mime_type,
             'sort_order' => $this->sort_order,

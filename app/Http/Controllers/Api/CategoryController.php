@@ -33,20 +33,20 @@ class CategoryController extends Controller
     public function store(CategoryCreateRequest $request)
     {
         $category = Category::create($request->validated());
-        return (new CategoryResource($category->load(['tasks'])))
+        return CategoryResource::make($category->load(['tasks']))
             ->additional(['success' => true, 'message' => 'Category created successfully'])
             ->response()->setStatusCode(201);
     }
 
     public function show(Category $category)
     {
-        return (new CategoryResource($category->load(['tasks'])))->additional(['success' => true]);
+        return CategoryResource::make($category->load(['tasks']))->additional(['success' => true]);
     }
 
     public function update(CategoryUpdateRequest $request, Category $category)
     {
         $category->update($request->validated());
-        return (new CategoryResource($category->load(['tasks'])))
+        return CategoryResource::make($category->load(['tasks']))
             ->additional(['success' => true, 'message' => 'Category updated successfully']);
     }
 

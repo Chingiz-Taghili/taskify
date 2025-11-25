@@ -18,7 +18,7 @@ class UserController extends Controller
         $sortBy = $request->query('sort_by', 'id');
         $sortOrder = $request->query('sort_order', 'asc');
 
-        $users = User::with(['roles', 'tasks'])
+        $users = User::with(['roles', 'tasks.assignment.assignedBy'])
             // Filters
             ->when($request->query('role'),
                 fn($q, $role) => $q->whereHas('roles', fn($r) => $r->where('name', $role)))
@@ -43,14 +43,14 @@ class UserController extends Controller
     {
         $user = User::create($request->validated());
         $user->assignRole('user');
-        return (new UserResource($user->load(['roles', 'tasks'])))
+        return UserResource::make($user->load(['roles', 'tasks.assignment.assignedBy']))
             ->additional(['success' => true, 'message' => 'User created successfully.'])
             ->response()->setStatusCode(201);
     }
 
     public function show(User $user)
     {
-        return (new UserResource($user->load(['roles', 'tasks'])))->additional(['success' => true]);
+        return UserResource::make($user->load(['roles', 'tasks.assignment.assignedBy']))->additional(['success' => true]);
     }
 
     public function update(UserUpdateRequest $request, User $user)
@@ -58,7 +58,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $user->update($request->validated());
-        return (new UserResource($user->load(['roles', 'tasks'])))
+        return UserResource::make($user->load(['roles', 'tasks.assignment.assignedBy']))
             ->additional(['success' => true, 'message' => 'User updated successfully.']);
     }
 

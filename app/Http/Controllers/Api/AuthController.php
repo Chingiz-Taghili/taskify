@@ -30,7 +30,7 @@ class AuthController extends Controller
         $user->assignRole('user');
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return (new UserResource($user->load(['roles', 'tasks'])))
+        return UserResource::make($user->load(['roles', 'tasks']))
             ->additional(['success' => true, 'message' => 'User registered successfully.',
                 'token' => $token,])->response()->setStatusCode(201);
     }
@@ -46,7 +46,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return (new UserResource($user->load(['roles', 'tasks'])))->additional([
+        return UserResource::make($user->load(['roles', 'tasks']))->additional([
             'success' => true, 'message' => 'Login successful.', 'token' => $token,]);
     }
 
@@ -58,6 +58,6 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return (new UserResource($request->user()->load(['roles', 'tasks'])))->additional(['success' => true]);
+        return UserResource::make($request->user()->load(['roles', 'tasks']))->additional(['success' => true]);
     }
 }

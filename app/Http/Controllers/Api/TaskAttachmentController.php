@@ -25,7 +25,7 @@ class TaskAttachmentController extends Controller
     public function store(TaskAttachmentCreateRequest $request, Task $task)
     {
         $attachment = $task->attachments()->create($request->validated());
-        return (new TaskAttachmentResource($attachment))
+        return TaskAttachmentResource::make($attachment)
             ->additional(['success' => true, 'message' => 'Attachment uploaded successfully.'])
             ->response()->setStatusCode(201);
     }
@@ -37,7 +37,7 @@ class TaskAttachmentController extends Controller
         if ($attachment->task_id !== $task->id) {
             abort(404, 'Attachment not found in this task.');
         }
-        return (new TaskAttachmentResource($attachment))->additional(['success' => true]);
+        return TaskAttachmentResource::make($attachment)->additional(['success' => true]);
     }
 
     public function update(TaskAttachmentUpdateRequest $request, Task $task, TaskAttachment $attachment)
@@ -46,7 +46,7 @@ class TaskAttachmentController extends Controller
             abort(404, 'Attachment not found in this task.');
         }
         $attachment->update($request->validated());
-        return (new TaskAttachmentResource($attachment))
+        return TaskAttachmentResource::make($attachment)
             ->additional(['success' => true, 'message' => 'Attachment updated successfully.']);
     }
 
