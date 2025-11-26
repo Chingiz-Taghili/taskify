@@ -17,7 +17,8 @@ class ClientController extends Controller
         $sortBy = $request->query('sort_by', 'id');
         $sortOrder = $request->query('sort_order', 'asc');
 
-        $clients = Client::with(['projects', 'tasks'])
+        $clients = Client::with(['projects', 'tasksDirect',
+            'tasksViaProject', 'usersViaTask', 'usersViaProject'])
             // Global search
             ->when($request->query('search'), fn($q, $search) => $q
                 ->where(function ($query) use ($search) {
@@ -33,20 +34,23 @@ class ClientController extends Controller
     public function store(ClientCreateRequest $request)
     {
         $client = Client::create($request->validated());
-        return ClientResource::make($client->load(['projects', 'tasks']))
+        return ClientResource::make($client->load(['projects',
+            'tasksDirect', 'tasksViaProject', 'usersViaTask', 'usersViaProject']))
             ->additional(['success' => true, 'message' => 'Client created successfully'])
             ->response()->setStatusCode(201);
     }
 
     public function show(Client $client)
     {
-        return ClientResource::make($client->load(['projects', 'tasks']))->additional(['success' => true]);
+        return ClientResource::make($client->load(['projects', 'tasksDirect',
+            'tasksViaProject', 'usersViaTask', 'usersViaProject']))->additional(['success' => true]);
     }
 
     public function update(ClientUpdateRequest $request, Client $client)
     {
         $client->update($request->validated());
-        return ClientResource::make($client->load(['projects', 'tasks']))
+        return ClientResource::make($client->load(['projects',
+            'tasksDirect', 'tasksViaProject', 'usersViaTask', 'usersViaProject']))
             ->additional(['success' => true, 'message' => 'Client updated successfully']);
     }
 

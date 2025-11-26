@@ -30,7 +30,8 @@ class AuthController extends Controller
         $user->assignRole('user');
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return UserResource::make($user->load(['roles', 'tasks']))
+        return UserResource::make($user->load(['roles', 'tasks.assignment.assignedBy',
+            'projects', 'clientsDirect', 'clientsViaProject']))
             ->additional(['success' => true, 'message' => 'User registered successfully.',
                 'token' => $token,])->response()->setStatusCode(201);
     }
@@ -46,8 +47,9 @@ class AuthController extends Controller
         $user = Auth::user();
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return UserResource::make($user->load(['roles', 'tasks']))->additional([
-            'success' => true, 'message' => 'Login successful.', 'token' => $token,]);
+        return UserResource::make($user->load(['roles',
+            'tasks.assignment.assignedBy', 'projects', 'clientsDirect', 'clientsViaProject']))
+            ->additional(['success' => true, 'message' => 'Login successful.', 'token' => $token,]);
     }
 
     public function logout(Request $request): JsonResponse
@@ -58,6 +60,7 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return UserResource::make($request->user()->load(['roles', 'tasks']))->additional(['success' => true]);
+        return UserResource::make($request->user()->load(['roles', 'tasks.assignment.assignedBy',
+            'projects', 'clientsDirect', 'clientsViaProject']))->additional(['success' => true]);
     }
 }

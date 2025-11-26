@@ -17,7 +17,7 @@ class CategoryController extends Controller
         $sortBy = $request->query('sort_by', 'id');
         $sortOrder = $request->query('sort_order', 'asc');
 
-        $categories = Category::with(['tasks'])
+        $categories = Category::with(['tasks', 'users'])
             // Global search
             ->when($request->query('search'), fn($q, $search) => $q
                 ->where(function ($query) use ($search) {
@@ -33,20 +33,20 @@ class CategoryController extends Controller
     public function store(CategoryCreateRequest $request)
     {
         $category = Category::create($request->validated());
-        return CategoryResource::make($category->load(['tasks']))
+        return CategoryResource::make($category->load(['tasks', 'users']))
             ->additional(['success' => true, 'message' => 'Category created successfully'])
             ->response()->setStatusCode(201);
     }
 
     public function show(Category $category)
     {
-        return CategoryResource::make($category->load(['tasks']))->additional(['success' => true]);
+        return CategoryResource::make($category->load(['tasks', 'users']))->additional(['success' => true]);
     }
 
     public function update(CategoryUpdateRequest $request, Category $category)
     {
         $category->update($request->validated());
-        return CategoryResource::make($category->load(['tasks']))
+        return CategoryResource::make($category->load(['tasks', 'users']))
             ->additional(['success' => true, 'message' => 'Category updated successfully']);
     }
 
