@@ -31,6 +31,29 @@ class User extends Authenticatable
 
     protected $appends = ['clients'];
 
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_root' => 'boolean',
+        ];
+    }
+
+    protected function clients(): Attribute
+    {
+        return Attribute::get(function () {
+            $clients = collect();
+            if ($this->relationLoaded('clientsViaTask')) {
+                $clients = $clients->merge($this->clientsViaTask);
+            }
+            if ($this->relationLoaded('clientsViaProject')) {
+                $clients = $clients->merge($this->clientsViaProject);
+            }
+            return $clients->unique('id');
+        });
+    }
+
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'task_user')->using(
@@ -43,39 +66,16 @@ class User extends Authenticatable
             $this->tasks(), (new Task())->project())->distinct();
     }
 
-    public function clientsDirect(): HasManyDeep
+    public function clientsViaTask(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations(
-            $this->tasks(), (new Task())->client())->distinct();
+            $this->tasks(), (new Task())->clientDirect())->distinct();
     }
 
     public function clientsViaProject(): HasManyDeep
     {
-        return $this->hasManyDeepFromRelations($this->tasks(),
-            (new Task())->project(), (new Project())->client())->distinct();
-    }
-
-    protected function clients(): Attribute
-    {
-        return Attribute::get(function () {
-            $clients = collect();
-            if ($this->relationLoaded('clientsDirect')) {
-                $clients = $clients->merge($this->clientsDirect);
-            }
-            if ($this->relationLoaded('clientsViaProject')) {
-                $clients = $clients->merge($this->clientsViaProject);
-            }
-            return $clients->unique('id');
-        });
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_root' => 'boolean',
-        ];
+        return $this->hasManyDeepFromRelations(
+            $this->projects(), (new Project())->client())->distinct();
     }
 
     protected static function booted(): void

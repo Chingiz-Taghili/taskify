@@ -17,6 +17,7 @@ class ProjectResource extends JsonResource
             'cover_photo' => $this->cover_photo,
             'status' => $this->status,
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+            'users' => UserResource::collection($this->whenLoaded('users')),
             'created_at' => $this->created_at,
         ];
     }

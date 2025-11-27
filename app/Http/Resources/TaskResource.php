@@ -12,7 +12,7 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'users' => UserResource::collection($this->whenLoaded('users')),
-            'client' => ClientResource::make($this->whenLoaded('client')),
+            'client' => ClientResource::make($this->client),
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'title' => $this->title,

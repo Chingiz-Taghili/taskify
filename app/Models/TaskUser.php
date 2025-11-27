@@ -14,6 +14,11 @@ class TaskUser extends Pivot
 
     protected $fillable = ['task_id', 'user_id',];
 
+    protected function casts(): array
+    {
+        return ['assigned_at' => 'datetime'];
+    }
+
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
@@ -27,11 +32,6 @@ class TaskUser extends Pivot
     public function assignedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_by');
-    }
-
-    protected function casts(): array
-    {
-        return ['assigned_at' => 'datetime'];
     }
 
     protected static function booted(): void

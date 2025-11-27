@@ -19,8 +19,8 @@ class TaskController extends Controller
         $sortBy = $request->query('sort_by', 'id');
         $sortOrder = $request->query('sort_order', 'asc');
 
-        $tasks = Task::with(['users.assignment.assignedBy', 'client', 'project',
-            'category', 'attachments', 'parent', 'children'])
+        $tasks = Task::with(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children'])
             // Filters
             ->when($request->query('user_id'),
                 fn($q, $user_id) => $q->whereHas('users', fn($u) => $u->where('id', $user_id)))
@@ -49,8 +49,8 @@ class TaskController extends Controller
     public function store(TaskCreateRequest $request)
     {
         $task = Task::create($request->validated());
-        return TaskResource::make($task->load(['users.assignment.assignedBy', 'client',
-            'project', 'category', 'attachments', 'parent', 'children']))
+        return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task created successfully'])
             ->response()->setStatusCode(201);
     }
@@ -59,16 +59,16 @@ class TaskController extends Controller
     {
         $this->authorize('view', $task);
 
-        return TaskResource::make($task->load(['users.assignment.assignedBy', 'client',
-            'project', 'category', 'attachments', 'parent', 'children']))
+        return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true]);
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
         $task->update($request->validated());
-        return TaskResource::make($task->load(['users.assignment.assignedBy', 'client',
-            'project', 'category', 'attachments', 'parent', 'children']))
+        return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task updated successfully']);
     }
 
@@ -81,16 +81,16 @@ class TaskController extends Controller
     public function assign(TaskAssignRequest $request, Task $task)
     {
         $task->users()->attach($request->validated());
-        return TaskResource::make($task->load(['users.assignment.assignedBy', 'client',
-            'project', 'category', 'attachments', 'parent', 'children']))
+        return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task assigned successfully']);
     }
 
     public function unassign(TaskAssignRequest $request, Task $task)
     {
         $task->users()->detach($request->validated());
-        return TaskResource::make($task->load(['users.assignment.assignedBy', 'client',
-            'project', 'category', 'attachments', 'parent', 'children']))
+        return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task unassigned successfully']);
     }
 
@@ -99,8 +99,8 @@ class TaskController extends Controller
         $this->authorize('changeStatus', $task);
 
         $task->update($request->validated());
-        return TaskResource::make($task->load(['users.assignment.assignedBy', 'client',
-            'project', 'category', 'attachments', 'parent', 'children']))
+        return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
+            'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task status updated successfully']);
     }
 }

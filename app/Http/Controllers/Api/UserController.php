@@ -19,7 +19,7 @@ class UserController extends Controller
         $sortOrder = $request->query('sort_order', 'asc');
 
         $users = User::with(['roles', 'tasks.assignment.assignedBy',
-            'projects', 'clientsDirect', 'clientsViaProject'])
+            'projects', 'clientsViaTask', 'clientsViaProject'])
             // Filters
             ->when($request->query('role'),
                 fn($q, $role) => $q->whereHas('roles', fn($r) => $r->where('name', $role)))
@@ -45,7 +45,7 @@ class UserController extends Controller
         $user = User::create($request->validated());
         $user->assignRole('user');
         return UserResource::make($user->load(['roles',
-            'tasks.assignment.assignedBy', 'projects', 'clientsDirect', 'clientsViaProject']))
+            'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
             ->additional(['success' => true, 'message' => 'User created successfully.'])
             ->response()->setStatusCode(201);
     }
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         return UserResource::make($user->load(['roles', 'tasks.assignment.assignedBy',
-            'projects', 'clientsDirect', 'clientsViaProject']))->additional(['success' => true]);
+            'projects', 'clientsViaTask', 'clientsViaProject']))->additional(['success' => true]);
     }
 
     public function update(UserUpdateRequest $request, User $user)
@@ -62,7 +62,7 @@ class UserController extends Controller
 
         $user->update($request->validated());
         return UserResource::make($user->load(['roles',
-            'tasks.assignment.assignedBy', 'projects', 'clientsDirect', 'clientsViaProject']))
+            'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
             ->additional(['success' => true, 'message' => 'User updated successfully.']);
     }
 

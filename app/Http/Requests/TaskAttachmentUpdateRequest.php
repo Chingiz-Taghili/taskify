@@ -14,7 +14,6 @@ class TaskAttachmentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file_path' => ['sometimes', 'string', 'max:255', 'regex:/\.(jpg|jpeg|png|webp|pdf|doc|docx|xls|xlsx|txt)$/i'],
             'sort_order' => ['sometimes', 'nullable', 'integer', 'min:0'],
         ];
     }

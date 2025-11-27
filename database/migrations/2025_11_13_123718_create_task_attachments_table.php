@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('task_id')->constrained()->cascadeOnDelete();
             $table->string('file_path');
-            $table->string('mime_type')->nullable();
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
         });

@@ -8,12 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Project extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasRelationships;
 
     protected $fillable = ['name', 'client_id', 'description', 'cover_photo', 'status',];
+
+    protected function casts(): array
+    {
+        return ['status' => ProjectStatus::class];
+    }
 
     public function client(): BelongsTo
     {
@@ -25,9 +32,10 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 
-    protected function casts(): array
+    public function users(): HasManyDeep
     {
-        return ['status' => ProjectStatus::class];
+        return $this->hasManyDeepFromRelations(
+            $this->tasks(), (new Task())->users())->distinct();
     }
 
     protected static function booted(): void

@@ -12,13 +12,10 @@ use Illuminate\Http\Request;
 
 class TaskAttachmentController extends Controller
 {
-    public function index(Request $request, Task $task)
+    public function index(Task $task)
     {
         $this->authorize('view', $task);
-
-        $attachments = $task->attachments()->when($request->query('mime_type'),
-            fn($q, $mime_type) => $q->where('mime_type', $mime_type))->get();
-
+        $attachments = $task->attachments()->get();
         return TaskAttachmentResource::collection($attachments)->additional(['success' => true]);
     }
 
