@@ -15,8 +15,8 @@ class ClientResource extends JsonResource
             'logo' => $this->logo,
             'notes' => $this->notes,
             'projects' => ProjectResource::collection($this->whenLoaded('projects')),
-            'tasks' => TaskResource::collection($this->tasks),
-            'users' => UserResource::collection($this->users),
+            'tasks' => $this->when($this->tasks, fn() => TaskResource::collection($this->tasks)),
+            'users' => $this->when($this->users, fn() => UserResource::collection($this->users)),
             'created_at' => $this->created_at,
         ];
     }

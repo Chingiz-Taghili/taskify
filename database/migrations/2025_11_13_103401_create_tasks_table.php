@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('status')->default(TaskStatus::TODO->value);
             $table->foreignId('parent_task_id')->nullable()->constrained('tasks')->cascadeOnDelete();
-            $table->dateTime('due_date')->nullable();
+            $table->timestamp('due_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

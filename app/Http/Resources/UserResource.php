@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'roles' => $this->getRoleNames(),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'projects' => ProjectResource::collection($this->whenLoaded('projects')),
-            'clients' => ClientResource::collection($this->clients),
+            'clients' => $this->when($this->clients, fn() => ClientResource::collection($this->clients)),
             'assignment' => $this->whenPivotLoadedAs('assignment', 'task_user', function () {
                 return [
                     'assigned_by' => $this->assignment->relationLoaded('assignedBy')

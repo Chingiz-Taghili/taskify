@@ -29,7 +29,7 @@ class Client extends Model
             if ($this->relationLoaded('tasksViaProject')) {
                 $tasks = $tasks->merge($this->tasksViaProject);
             }
-            return $tasks->unique('id');
+            return $tasks->isNotEmpty() ? $tasks->unique('id') : null;
         });
     }
 
@@ -43,7 +43,7 @@ class Client extends Model
             if ($this->relationLoaded('usersViaProject')) {
                 $users = $users->merge($this->usersViaProject);
             }
-            return $users->unique('id');
+            return $users->isNotEmpty() ? $users->unique('id') : null;
         });
     }
 

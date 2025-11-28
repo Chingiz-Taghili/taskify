@@ -50,7 +50,7 @@ class User extends Authenticatable
             if ($this->relationLoaded('clientsViaProject')) {
                 $clients = $clients->merge($this->clientsViaProject);
             }
-            return $clients->unique('id');
+            return $clients->isNotEmpty() ? $clients->unique('id') : null;
         });
     }
 

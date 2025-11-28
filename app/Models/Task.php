@@ -27,7 +27,7 @@ class Task extends Model
 
     protected function casts(): array
     {
-        return ['status' => TaskStatus::class];
+        return ['status' => TaskStatus::class, 'due_date' => 'datetime'];
     }
 
     protected function client(): Attribute
