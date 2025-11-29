@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskAssignRequest;
 use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskFilterRequest;
 use App\Http\Requests\TaskStatusRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index(Request $request)
+    public function index(TaskFilterRequest $request)
     {
         $perPage = $request->integer('per_page', 10);
         $sortBy = $request->query('sort_by', 'id');
@@ -34,6 +35,11 @@ class TaskController extends Controller
                 fn($q, $parent_task_id) => $q->where('parent_task_id', $parent_task_id))
             ->when($request->query('status'),
                 fn($q, $status) => $q->where('status', $status))
+            // Date Filters
+            ->when($request->query('due_date_from'),
+                fn($q, $date) => $q->whereDate('due_date', '>=', $date))
+            ->when($request->query('due_date_to'),
+                fn($q, $date) => $q->whereDate('due_date', '<=', $date))
             // Global search
             ->when($request->query('search'), fn($q, $search) => $q
                 ->where(function ($query) use ($search) {

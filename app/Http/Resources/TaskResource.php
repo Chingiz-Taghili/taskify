@@ -25,7 +25,7 @@ class TaskResource extends JsonResource
                 return [
                     'assigned_by' => $this->assignment->relationLoaded('assignedBy')
                         ? UserResource::make($this->assignment->assignedBy) : null,
-                    'assigned_at' => $this->assignment->assigned_at,];
+                    'assigned_at' => $this->assignment->assigned_at?->toIso8601String(),];
             }),
             'created_at' => $this->created_at?->toIso8601String(),
         ];

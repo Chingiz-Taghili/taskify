@@ -16,7 +16,7 @@ class CategoryResource extends JsonResource
             'description' => $this->description,
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'users' => UserResource::collection($this->whenLoaded('users')),
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at?->toIso8601String(),
         ];
     }
 }
