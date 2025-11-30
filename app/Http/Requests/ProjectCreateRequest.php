@@ -19,6 +19,7 @@ class ProjectCreateRequest extends FormRequest
             'client_id' => ['nullable', 'integer', 'exists:clients,id'],
             'description' => ['nullable', 'string', 'min:2'],
             'cover_photo' => ['nullable', 'string', 'max:255', 'regex:/\.(jpg|jpeg|png|webp)$/i'],
+            'due_date' => ['nullable', 'date'],
         ];
     }
 }

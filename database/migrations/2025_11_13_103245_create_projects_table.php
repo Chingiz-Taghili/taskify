@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('cover_photo')->nullable();
             $table->string('status')->default(ProjectStatus::PLANNED->value);
+            $table->timestamp('due_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['client_id', 'name']);

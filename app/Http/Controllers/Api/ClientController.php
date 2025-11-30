@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientCreateRequest;
+use App\Http\Requests\ClientFilterRequest;
 use App\Http\Requests\ClientUpdateRequest;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function index(Request $request)
+    public function index(ClientFilterRequest $request)
     {
         $perPage = $request->integer('per_page', 10);
         $sortBy = $request->query('sort_by', 'id');

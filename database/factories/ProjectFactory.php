@@ -24,6 +24,7 @@ class ProjectFactory extends Factory
             'description' => $this->faker->sentence(),
             'cover_photo' => $this->faker->imageUrl(),
             'status' => ProjectStatus::PLANNED->value,
+            'due_date' => $this->faker->date(),
         ];
     }
 }

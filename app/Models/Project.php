@@ -15,11 +15,11 @@ class Project extends Model
 {
     use HasFactory, SoftDeletes, HasRelationships;
 
-    protected $fillable = ['name', 'client_id', 'description', 'cover_photo', 'status',];
+    protected $fillable = ['name', 'client_id', 'description', 'cover_photo', 'status', 'due_date',];
 
     protected function casts(): array
     {
-        return ['status' => ProjectStatus::class];
+        return ['status' => ProjectStatus::class, 'due_date' => 'datetime'];
     }
 
     public function client(): BelongsTo

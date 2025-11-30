@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserFilterRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -12,7 +13,7 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index(UserFilterRequest $request)
     {
         $perPage = $request->integer('per_page', 10);
         $sortBy = $request->query('sort_by', 'id');

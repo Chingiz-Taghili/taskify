@@ -18,6 +18,7 @@ class ProjectResource extends JsonResource
             'status' => $this->status,
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'users' => UserResource::collection($this->whenLoaded('users')),
+            'due_date' => $this->due_date?->toIso8601String(),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

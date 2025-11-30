@@ -20,6 +20,7 @@ class ProjectUpdateRequest extends FormRequest
             'client_id' => ['sometimes', 'nullable', 'integer', 'exists:clients,id'],
             'description' => ['sometimes', 'nullable', 'string', 'min:2'],
             'cover_photo' => ['sometimes', 'nullable', 'string', 'max:255', 'regex:/\.(jpg|jpeg|png|webp)$/i'],
+            'due_date' => ['sometimes', 'nullable', 'date'],
         ];
     }
 }
