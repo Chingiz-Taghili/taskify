@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TaskUserRequest;
-use App\Http\Requests\TaskCreateRequest;
-use App\Http\Requests\TaskFilterRequest;
-use App\Http\Requests\TaskStatusRequest;
-use App\Http\Requests\TaskUpdateRequest;
+use App\Http\Requests\Task\TaskCreateRequest;
+use App\Http\Requests\Task\TaskFilterRequest;
+use App\Http\Requests\Task\TaskStatusRequest;
+use App\Http\Requests\Task\TaskUpdateRequest;
+use App\Http\Requests\Task\TaskUserRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {

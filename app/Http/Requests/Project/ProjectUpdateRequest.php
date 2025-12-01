@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class TaskUpdateRequest extends FormRequest
+class ProjectUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,12 +15,11 @@ class TaskUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => ['sometimes', 'string', 'min:2', 'max:100',
+                Rule::unique('projects')->ignore($this->route('project')),],
             'client_id' => ['sometimes', 'nullable', 'integer', Rule::exists('clients', 'id')],
-            'project_id' => ['sometimes', 'nullable', 'integer', Rule::exists('projects', 'id')],
-            'category_id' => ['sometimes', 'nullable', 'integer', Rule::exists('categories', 'id')],
-            'title' => ['sometimes', 'string', 'min:2', 'max:160'],
             'description' => ['sometimes', 'nullable', 'string', 'min:2'],
-            'parent_task_id' => ['sometimes', 'nullable', 'integer', Rule::exists('tasks', 'id')],
+            'cover_photo' => ['sometimes', 'nullable', 'string', 'max:255', 'regex:/\.(jpg|jpeg|png|webp)$/i'],
             'due_date' => ['sometimes', 'nullable', 'date'],
         ];
     }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AuthRegisterRequest extends FormRequest
+class UserCreateRequest extends FormRequest
 {
     public function authorize(): bool
     {

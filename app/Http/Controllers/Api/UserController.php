@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserCreateRequest;
-use App\Http\Requests\UserFilterRequest;
-use App\Http\Requests\UserRoleRequest;
-use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\User\UserFilterRequest;
+use App\Http\Requests\User\UserRoleRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {

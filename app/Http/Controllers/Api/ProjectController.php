@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProjectCreateRequest;
-use App\Http\Requests\ProjectFilterRequest;
-use App\Http\Requests\ProjectStatusRequest;
-use App\Http\Requests\ProjectUpdateRequest;
+use App\Http\Requests\Project\ProjectCreateRequest;
+use App\Http\Requests\Project\ProjectFilterRequest;
+use App\Http\Requests\Project\ProjectStatusRequest;
+use App\Http\Requests\Project\ProjectUpdateRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {

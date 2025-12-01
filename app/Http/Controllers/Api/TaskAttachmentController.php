@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TaskAttachmentCreateRequest;
-use App\Http\Requests\TaskAttachmentUpdateRequest;
+use App\Http\Requests\Task\TaskAttachmentCreateRequest;
+use App\Http\Requests\Task\TaskAttachmentUpdateRequest;
 use App\Http\Resources\TaskAttachmentResource;
 use App\Models\Task;
 use App\Models\TaskAttachment;
-use Illuminate\Http\Request;
 
 class TaskAttachmentController extends Controller
 {

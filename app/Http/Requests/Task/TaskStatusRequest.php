@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Task;
 
-use App\Enums\ProjectStatus;
+use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class ProjectStatusRequest extends FormRequest
+class TaskStatusRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class ProjectStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', new Enum(ProjectStatus::class)],
+            'status' => ['required', new Enum(TaskStatus::class)],
         ];
     }
 }

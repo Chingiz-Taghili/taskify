@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Client;
 
-use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 
-class CategoryFilterRequest extends FormRequest
+class ClientFilterRequest extends FormRequest
 {
     public function authorize(): bool
     {
