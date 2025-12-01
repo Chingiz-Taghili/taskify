@@ -23,7 +23,7 @@ class ProjectFilterRequest extends FormRequest
             'sort_by' => ['nullable',
                 Rule::in(['id', 'name', 'status', 'due_date', 'created_at', 'updated_at'])],
             'sort_order' => ['nullable', Rule::in(['asc', 'desc'])],
-            'client_id' => ['nullable', 'integer', 'exists:clients,id'],
+            'client_id' => ['nullable', 'integer', Rule::exists('clients', 'id')],
             'status' => ['nullable', new Enum(ProjectStatus::class)],
             'due_date_from' => ['nullable', 'date'],
             'due_date_to' => ['nullable', 'date', 'after_or_equal:due_date_from'],

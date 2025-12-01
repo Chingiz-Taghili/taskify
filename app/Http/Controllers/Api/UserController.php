@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserFilterRequest;
+use App\Http\Requests\UserRoleRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -73,25 +74,27 @@ class UserController extends Controller
         return response()->json(['success' => true, 'message' => 'User deleted successfully.']);
     }
 
-    public function assignRole(User $user, Role $role)
+    public function assignRoles(UserRoleRequest $request, User $user)
     {
         if ($user->is_root) {
             return response()->json(['success' => false,
                 'message' => 'Root superadmin role cannot be modified.'], 403);
         }
-        $user->assignRole($role);
-        return response()->json(['success' => true,
-            'message' => 'Role assigned to user successfully.', 'data' => $user->getRoleNames()]);
+        $user->assignRole($request->validated());
+        return UserResource::make($user->load(['roles',
+            'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
+            ->additional(['success' => true, 'message' => 'Role assigned to user successfully.']);
     }
 
-    public function removeRole(User $user, Role $role)
+    public function removeRoles(UserRoleRequest $request, User $user)
     {
         if ($user->is_root) {
             return response()->json(['success' => false,
                 'message' => 'Root superadmin role cannot be modified.'], 403);
         }
-        $user->removeRole($role);
-        return response()->json(['success' => true,
-            'message' => 'Role removed from user successfully.', 'data' => $user->getRoleNames()]);
+        $user->removeRole($request->validated());
+        return UserResource::make($user->load(['roles',
+            'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
+            ->additional(['success' => true, 'message' => 'Role removed from user successfully.']);
     }
 }

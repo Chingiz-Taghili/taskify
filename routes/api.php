@@ -32,8 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('projects', ProjectController::class);
         Route::put('projects/{project}/status', [ProjectController::class, 'changeStatus']);
         Route::apiResource('tasks', TaskController::class)->except('show');
-        Route::post('tasks/{task}/assign', [TaskController::class, 'assign']);
-        Route::delete('tasks/{task}/unassign', [TaskController::class, 'unassign']);
+        Route::post('tasks/{task}/users', [TaskController::class, 'assignUsers']);
+        Route::delete('tasks/{task}/users', [TaskController::class, 'unassignUsers']);
         Route::apiResource('tasks.attachments', TaskAttachmentController::class)
             ->except(['index', 'show']);
     });
@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // -------------------- superadmin only --------------------
     Route::middleware('role:superadmin')->group(function () {
         Route::apiResource('users', UserController::class)->except('update');
-        Route::post('users/{user}/assign-role/{role}', [UserController::class, 'assignRole']);
-        Route::delete('users/{user}/remove-role/{role}', [UserController::class, 'removeRole']);
+        Route::post('users/{user}/roles', [UserController::class, 'assignRoles']);
+        Route::delete('users/{user}/roles', [UserController::class, 'removeRoles']);
     });
 });

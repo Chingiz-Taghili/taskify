@@ -23,7 +23,7 @@ class UserFilterRequest extends FormRequest
             'sort_by' => ['nullable', Rule::in(['id', 'name', 'surname', 'email',
                 'email_verified_at', 'job_title', 'phone_number', 'created_at', 'updated_at'])],
             'sort_order' => ['nullable', Rule::in(['asc', 'desc'])],
-            'role' => ['nullable', 'string', 'exists:roles,name'],
+            'role' => ['nullable', 'string', Rule::exists('roles', 'name')],
             'email_verified' => ['nullable', Rule::in(['true', 'false'])],
             'search' => ['nullable', 'string', 'max:255'],
         ];

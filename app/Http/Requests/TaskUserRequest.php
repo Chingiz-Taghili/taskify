@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class TaskAssignRequest extends FormRequest
+class TaskUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,8 +15,8 @@ class TaskAssignRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_ids' => ['required', 'array'],
-            'user_ids.*' => ['required', 'integer', 'exists:users,id'],
+            'user_ids' => ['required', 'array', 'min:1'],
+            'user_ids.*' => ['required', 'integer', Rule::exists('users', 'id')],
         ];
     }
 }

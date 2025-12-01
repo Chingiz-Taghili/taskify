@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TaskAssignRequest;
+use App\Http\Requests\TaskUserRequest;
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskFilterRequest;
 use App\Http\Requests\TaskStatusRequest;
@@ -84,7 +84,7 @@ class TaskController extends Controller
         return response()->json(['success' => true, 'message' => 'Task deleted successfully']);
     }
 
-    public function assign(TaskAssignRequest $request, Task $task)
+    public function assignUsers(TaskUserRequest $request, Task $task)
     {
         $task->users()->attach($request->validated());
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
@@ -92,7 +92,7 @@ class TaskController extends Controller
             ->additional(['success' => true, 'message' => 'Task assigned successfully']);
     }
 
-    public function unassign(TaskAssignRequest $request, Task $task)
+    public function unassignUsers(TaskUserRequest $request, Task $task)
     {
         $task->users()->detach($request->validated());
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
