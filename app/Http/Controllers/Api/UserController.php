@@ -78,7 +78,7 @@ class UserController extends Controller
             return response()->json(['success' => false,
                 'message' => 'Root superadmin role cannot be modified.'], 403);
         }
-        $user->assignRole($request->validated());
+        $user->assignRole($request->validated('roles'));
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
             ->additional(['success' => true, 'message' => 'Role assigned to user successfully.']);
@@ -90,7 +90,7 @@ class UserController extends Controller
             return response()->json(['success' => false,
                 'message' => 'Root superadmin role cannot be modified.'], 403);
         }
-        $user->removeRole($request->validated());
+        $user->removeRole($request->validated('roles'));
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
             ->additional(['success' => true, 'message' => 'Role removed from user successfully.']);

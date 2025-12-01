@@ -85,7 +85,7 @@ class TaskController extends Controller
 
     public function assignUsers(TaskUserRequest $request, Task $task)
     {
-        $task->users()->attach($request->validated());
+        $task->users()->attach($request->validated('user_ids'));
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task assigned successfully']);
@@ -93,7 +93,7 @@ class TaskController extends Controller
 
     public function unassignUsers(TaskUserRequest $request, Task $task)
     {
-        $task->users()->detach($request->validated());
+        $task->users()->detach($request->validated('user_ids'));
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
             ->additional(['success' => true, 'message' => 'Task unassigned successfully']);
