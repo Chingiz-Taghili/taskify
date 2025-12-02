@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'İstifadəçi adı və ya şifrə yanlışdır.',
-    'password' => 'Təqdim edilən şifrə yanlışdır.',
-    'throttle' => 'Çox sayda giriş cəhdi. Zəhmət olmasa, :seconds saniyə sonra təkrar cəhd edin.',
+    'failed' => 'Daxil etdiyiniz məlumatlar yanlışdır.',
+    'password' => 'Şifrə yanlışdır.',
+    'throttle' => 'Çox sayda giriş cəhdi. :seconds saniyə sonra yenidən cəhd edin.',
 
 ];

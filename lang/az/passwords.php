@@ -14,9 +14,9 @@ return [
     */
 
     'reset' => 'Şifrəniz yeniləndi.',
-    'sent' => 'Şifrənin bərpası üçün link e-poçt ünvanınıza göndərildi.',
-    'throttled' => 'Çox sayda cəhd. Zəhmət olmasa gözləyin.',
-    'token' => 'Bu şifrə bərpa kodu etibarsızdır.',
+    'sent' => 'Şifrə bərpa linki e-poçt ünvanınıza göndərildi.',
+    'throttled' => 'Çox sayda cəhd. Bir az gözləyib yenidən cəhd edin.',
+    'token' => 'Bərpa kodu etibarsızdır.',
     'user' => "Bu e-poçt ünvanına uyğun istifadəçi tapılmadı.",
 
 ];

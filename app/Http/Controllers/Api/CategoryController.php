@@ -34,7 +34,8 @@ class CategoryController extends Controller
     {
         $category = Category::create($request->validated());
         return CategoryResource::make($category->load(['tasks', 'users']))
-            ->additional(['success' => true, 'message' => 'Category created successfully'])
+            ->additional(['success' => true, 'message'
+            => __('api.success_created', ['resource' => __('resources.category')])])
             ->response()->setStatusCode(201);
     }
 
@@ -47,12 +48,14 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
         return CategoryResource::make($category->load(['tasks', 'users']))
-            ->additional(['success' => true, 'message' => 'Category updated successfully']);
+            ->additional(['success' => true, 'message'
+            => __('api.success_updated', ['resource' => __('resources.category')])]);
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->json(['success' => true, 'message' => 'Category deleted successfully']);
+        return response()->json(['success' => true, 'message'
+        => __('api.success_deleted', ['resource' => __('resources.category')])]);
     }
 }
