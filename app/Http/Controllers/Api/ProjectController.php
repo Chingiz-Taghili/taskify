@@ -45,7 +45,8 @@ class ProjectController extends Controller
     {
         $project = Project::create($request->validated());
         return ProjectResource::make($project->load(['client', 'tasks', 'users']))
-            ->additional(['success' => true, 'message' => 'Project created successfully'])
+            ->additional(['success' => true, 'message'
+            => __('api.created', ['resource' => __('resources.project')])])
             ->response()->setStatusCode(201);
     }
 
@@ -59,19 +60,22 @@ class ProjectController extends Controller
     {
         $project->update($request->validated());
         return ProjectResource::make($project->load(['client', 'tasks', 'users']))
-            ->additional(['success' => true, 'message' => 'Project updated successfully']);
+            ->additional(['success' => true, 'message'
+            => __('api.updated', ['resource' => __('resources.project')])]);
     }
 
     public function destroy(Project $project)
     {
         $project->delete();
-        return response()->json(['success' => true, 'message' => 'Project deleted successfully']);
+        return response()->json(['success' => true, 'message'
+        => __('api.deleted', ['resource' => __('resources.project')])]);
     }
 
     public function changeStatus(ProjectStatusRequest $request, Project $project)
     {
         $project->update($request->validated());
         return ProjectResource::make($project->load(['client', 'tasks', 'users']))
-            ->additional(['success' => true, 'message' => 'Project status updated successfully']);
+            ->additional(['success' => true, 'message'
+            => __('api.status_updated', ['resource' => __('resources.project')])]);
     }
 }

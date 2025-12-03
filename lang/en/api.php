@@ -13,15 +13,20 @@ return [
     |
     */
 
-    'success_created'   => ':resource created successfully.',
-    'success_updated'   => ':resource updated successfully.',
-    'success_deleted'   => ':resource deleted successfully.',
-    'success_uploaded'  => ':resource uploaded successfully.',
-    'success_fetched'   => ':resource fetched successfully.',
-    'error_not_found'   => 'The requested resource was not found.',
-    'error_forbidden'   => 'You do not have permission to perform this action.',
-    'error_unauthorized'=> 'Authentication is required to access this resource.',
-    'error_server'      => 'An internal server error occurred.',
-    'error_exception'   => 'An internal server error occurred.',
+    'register' => 'User registered successfully.',
+    'login' => 'Login successful.',
+    'logout' => 'Logout successful.',
+    'invalid_credentials' => 'Invalid credentials.',
+    'created' => ':resource created successfully.',
+    'updated' => ':resource updated successfully.',
+    'status_updated' => ':resource status updated successfully.',
+    'deleted' => ':resource deleted successfully.',
+    'uploaded' => ':resource uploaded successfully.',
+    'fetched' => ':resource fetched successfully.',
+    'not_found' => 'The requested resource was not found.',
+    'forbidden' => 'You do not have permission to perform this action.',
+    'unauthorized' => 'Authentication is required to access this resource.',
+    'server' => 'An internal server error occurred.',
+    'exception' => 'An internal server error occurred.',
 
 ];

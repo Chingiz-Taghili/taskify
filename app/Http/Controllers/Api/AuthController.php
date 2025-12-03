@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
-            ->additional(['success' => true, 'message' => 'User registered successfully.',
+            ->additional(['success' => true, 'message' => __('api.register'),
                 'token' => $token,])->response()->setStatusCode(201);
     }
 
@@ -41,7 +41,7 @@ class AuthController extends Controller
         if (!Auth::attempt($request->validated())) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid credentials.',
+                'message' => __('api.invalid_credentials'),
             ], 401);
         }
         $user = Auth::user();
@@ -49,13 +49,13 @@ class AuthController extends Controller
 
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
-            ->additional(['success' => true, 'message' => 'Login successful.', 'token' => $token,]);
+            ->additional(['success' => true, 'message' => __('api.login'), 'token' => $token,]);
     }
 
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(['success' => true, 'message' => 'Logout successful.',]);
+        return response()->json(['success' => true, 'message' => __('api.logout'),]);
     }
 
     public function me(Request $request)

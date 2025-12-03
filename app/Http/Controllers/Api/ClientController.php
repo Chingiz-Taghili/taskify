@@ -36,7 +36,8 @@ class ClientController extends Controller
         $client = Client::create($request->validated());
         return ClientResource::make($client->load(['projects',
             'tasksDirect', 'tasksViaProject', 'usersViaTask', 'usersViaProject']))
-            ->additional(['success' => true, 'message' => 'Client created successfully'])
+            ->additional(['success' => true, 'message'
+            => __('api.created', ['resource' => __('resources.client')])])
             ->response()->setStatusCode(201);
     }
 
@@ -51,12 +52,14 @@ class ClientController extends Controller
         $client->update($request->validated());
         return ClientResource::make($client->load(['projects',
             'tasksDirect', 'tasksViaProject', 'usersViaTask', 'usersViaProject']))
-            ->additional(['success' => true, 'message' => 'Client updated successfully']);
+            ->additional(['success' => true, 'message'
+            => __('api.updated', ['resource' => __('resources.client')])]);
     }
 
     public function destroy(Client $client)
     {
         $client->delete();
-        return response()->json(['success' => true, 'message' => 'Client deleted successfully']);
+        return response()->json(['success' => true, 'message'
+        => __('api.deleted', ['resource' => __('resources.client')])]);
     }
 }

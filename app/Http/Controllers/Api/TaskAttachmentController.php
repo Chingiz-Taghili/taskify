@@ -22,7 +22,8 @@ class TaskAttachmentController extends Controller
     {
         $attachment = $task->attachments()->create($request->validated());
         return TaskAttachmentResource::make($attachment)
-            ->additional(['success' => true, 'message' => 'Attachment uploaded successfully.'])
+            ->additional(['success' => true, 'message'
+            => __('api.uploaded', ['resource' => __('resources.attachment')])])
             ->response()->setStatusCode(201);
     }
 
@@ -43,7 +44,8 @@ class TaskAttachmentController extends Controller
         }
         $attachment->update($request->validated());
         return TaskAttachmentResource::make($attachment)
-            ->additional(['success' => true, 'message' => 'Attachment updated successfully.']);
+            ->additional(['success' => true, 'message'
+            => __('api.updated', ['resource' => __('resources.attachment')])]);
     }
 
     public function destroy(Task $task, TaskAttachment $attachment)
@@ -52,6 +54,7 @@ class TaskAttachmentController extends Controller
             abort(404, 'Attachment not found in this task.');
         }
         $attachment->delete();
-        return response()->json(['success' => true, 'message' => 'Attachment deleted successfully.']);
+        return response()->json(['success' => true, 'message'
+        => __('api.deleted', ['resource' => __('resources.attachment')])]);
     }
 }

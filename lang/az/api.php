@@ -13,15 +13,20 @@ return [
     |
     */
 
-    'success_created'   => ':resource uğurla yaradıldı.',
-    'success_updated'   => ':resource uğurla yeniləndi.',
-    'success_deleted'   => ':resource uğurla silindi.',
-    'success_uploaded'  => ':resource uğurla yükləndi.',
-    'success_fetched'   => ':resource uğurla əldə edildi.',
-    'error_not_found'   => 'Tələb olunan resurs tapılmadı.',
-    'error_forbidden'   => 'Bu əməliyyatı yerinə yetirmək üçün icazəniz yoxdur.',
-    'error_unauthorized'=> 'Bu resursa daxil olmaq üçün autentifikasiya tələb olunur.',
-    'error_server'      => 'Daxili server xətası baş verdi.',
-    'error_exception'   => 'Daxili server xətası baş verdi.',
+    'register' => 'Qeydiyyat uğurla tamamlandı.',
+    'login' => 'Uğurla daxil olundu.',
+    'logout' => 'Uğurla çıxış edildi.',
+    'invalid_credentials' => 'Daxil edilən məlumatlar yanlışdır.',
+    'created' => ':resource uğurla yaradıldı.',
+    'updated' => ':resource uğurla yeniləndi.',
+    'status_updated' => ':resource statusu uğurla yeniləndi.',
+    'deleted' => ':resource uğurla silindi.',
+    'uploaded' => ':resource uğurla yükləndi.',
+    'fetched' => ':resource uğurla əldə edildi.',
+    'not_found' => 'Tələb olunan resurs tapılmadı.',
+    'forbidden' => 'Bu əməliyyatı yerinə yetirmək üçün icazəniz yoxdur.',
+    'unauthorized' => 'Bu resursa daxil olmaq üçün autentifikasiya tələb olunur.',
+    'server' => 'Daxili server xətası baş verdi.',
+    'exception' => 'Daxili server xətası baş verdi.',
 
 ];
