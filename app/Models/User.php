@@ -82,13 +82,13 @@ class User extends Authenticatable
     {
         static::updating(function (User $user) {
             if ($user->is_root && $user->isDirty('is_root')) {
-                throw new HttpException(403, 'Root superadmin flag cannot be modified.');
+                throw new HttpException(403, __('api.root_flag_immutable'));
             }
         });
 
         static::deleting(function (User $user) {
             if ($user->is_root) {
-                throw new HttpException(403, 'Root superadmin cannot be deleted.');
+                throw new HttpException(403, __('api.root_delete_denied'));
             }
         });
     }

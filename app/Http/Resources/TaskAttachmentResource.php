@@ -13,7 +13,7 @@ class TaskAttachmentResource extends JsonResource
             'id' => $this->id,
             'task' => TaskResource::make($this->whenLoaded('task')),
             'file_path' => $this->file_path,
-            'sort_order' => $this->sort_order,
+            'order_index' => $this->order_index,
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

@@ -56,7 +56,8 @@ class TaskController extends Controller
         $task = Task::create($request->validated());
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
-            ->additional(['success' => true, 'message' => 'Task created successfully'])
+            ->additional(['success' => true, 'message'
+            => __('api.created', ['resource' => __('resources.task')])])
             ->response()->setStatusCode(201);
     }
 
@@ -74,13 +75,15 @@ class TaskController extends Controller
         $task->update($request->validated());
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
-            ->additional(['success' => true, 'message' => 'Task updated successfully']);
+            ->additional(['success' => true, 'message'
+            => __('api.updated', ['resource' => __('resources.task')])]);
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
-        return response()->json(['success' => true, 'message' => 'Task deleted successfully']);
+        return response()->json(['success' => true, 'message'
+        => __('api.deleted', ['resource' => __('resources.task')])]);
     }
 
     public function assignUsers(TaskUserRequest $request, Task $task)
@@ -88,7 +91,7 @@ class TaskController extends Controller
         $task->users()->attach($request->validated('user_ids'));
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
-            ->additional(['success' => true, 'message' => 'Task assigned successfully']);
+            ->additional(['success' => true, 'message' => __('api.task_assigned')]);
     }
 
     public function unassignUsers(TaskUserRequest $request, Task $task)
@@ -96,7 +99,7 @@ class TaskController extends Controller
         $task->users()->detach($request->validated('user_ids'));
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
-            ->additional(['success' => true, 'message' => 'Task unassigned successfully']);
+            ->additional(['success' => true, 'message' => __('api.task_unassigned')]);
     }
 
     public function changeStatus(TaskStatusRequest $request, Task $task)
@@ -106,6 +109,7 @@ class TaskController extends Controller
         $task->update($request->validated());
         return TaskResource::make($task->load(['users.assignment.assignedBy', 'clientDirect',
             'clientViaProject', 'project', 'category', 'attachments', 'parent', 'children']))
-            ->additional(['success' => true, 'message' => 'Task status updated successfully']);
+            ->additional(['success' => true, 'message'
+            => __('api.status_updated', ['resource' => __('resources.task')])]);
     }
 }

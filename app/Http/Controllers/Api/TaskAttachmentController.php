@@ -32,7 +32,8 @@ class TaskAttachmentController extends Controller
         $this->authorize('view', $task);
 
         if ($attachment->task_id !== $task->id) {
-            abort(404, 'Attachment not found in this task.');
+            abort(404, __('api.child_not_found',
+                ['child' => __('resources.attachment'), 'parent' => __('resources.task')]));
         }
         return TaskAttachmentResource::make($attachment)->additional(['success' => true]);
     }
@@ -40,7 +41,8 @@ class TaskAttachmentController extends Controller
     public function update(TaskAttachmentUpdateRequest $request, Task $task, TaskAttachment $attachment)
     {
         if ($attachment->task_id !== $task->id) {
-            abort(404, 'Attachment not found in this task.');
+            abort(404, __('api.child_not_found',
+                ['child' => __('resources.attachment'), 'parent' => __('resources.task')]));
         }
         $attachment->update($request->validated());
         return TaskAttachmentResource::make($attachment)
@@ -51,7 +53,8 @@ class TaskAttachmentController extends Controller
     public function destroy(Task $task, TaskAttachment $attachment)
     {
         if ($attachment->task_id !== $task->id) {
-            abort(404, 'Attachment not found in this task.');
+            abort(404, __('api.child_not_found',
+                ['child' => __('resources.attachment'), 'parent' => __('resources.task')]));
         }
         $attachment->delete();
         return response()->json(['success' => true, 'message'

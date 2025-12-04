@@ -15,7 +15,7 @@ class TaskAttachmentCreateRequest extends FormRequest
     {
         return [
             'file_path' => ['required', 'string', 'max:255', 'regex:/\.(jpg|jpeg|png|webp|pdf|doc|docx|xls|xlsx|txt)$/i'],
-            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'order_index' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

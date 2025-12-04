@@ -68,7 +68,7 @@ class Task extends Model
 
     public function attachments(): HasMany
     {
-        return $this->hasMany(TaskAttachment::class)->orderBy('sort_order');
+        return $this->hasMany(TaskAttachment::class)->orderBy('order_index');
     }
 
     public function parent(): BelongsTo

@@ -14,7 +14,7 @@ class TaskAttachmentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sort_order' => ['sometimes', 'nullable', 'integer', 'min:0'],
+            'order_index' => ['sometimes', 'nullable', 'integer', 'min:0'],
         ];
     }
 }

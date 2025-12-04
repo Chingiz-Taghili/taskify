@@ -46,7 +46,8 @@ class UserController extends Controller
         $user->assignRole('user');
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
-            ->additional(['success' => true, 'message' => 'User created successfully.'])
+            ->additional(['success' => true, 'message'
+            => __('api.created', ['resource' => __('resources.user')])])
             ->response()->setStatusCode(201);
     }
 
@@ -63,36 +64,38 @@ class UserController extends Controller
         $user->update($request->validated());
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
-            ->additional(['success' => true, 'message' => 'User updated successfully.']);
+            ->additional(['success' => true, 'message'
+            => __('api.updated', ['resource' => __('resources.user')])]);
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json(['success' => true, 'message' => 'User deleted successfully.']);
+        return response()->json(['success' => true, 'message'
+        => __('api.deleted', ['resource' => __('resources.user')])]);
     }
 
     public function assignRoles(UserRoleRequest $request, User $user)
     {
         if ($user->is_root) {
             return response()->json(['success' => false,
-                'message' => 'Root superadmin role cannot be modified.'], 403);
+                'message' => __('api.root_role_immutable')], 403);
         }
         $user->assignRole($request->validated('roles'));
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
-            ->additional(['success' => true, 'message' => 'Role assigned to user successfully.']);
+            ->additional(['success' => true, 'message' => __('api.role_assigned')]);
     }
 
     public function removeRoles(UserRoleRequest $request, User $user)
     {
         if ($user->is_root) {
             return response()->json(['success' => false,
-                'message' => 'Root superadmin role cannot be modified.'], 403);
+                'message' => __('api.root_role_immutable')], 403);
         }
         $user->removeRole($request->validated('roles'));
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
-            ->additional(['success' => true, 'message' => 'Role removed from user successfully.']);
+            ->additional(['success' => true, 'message' => __('api.role_removed')]);
     }
 }
