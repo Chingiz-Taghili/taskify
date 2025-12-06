@@ -20,6 +20,7 @@ return [
     'invalid_credentials' => 'Invalid credentials.',
     'login' => 'Login successful.',
     'logout' => 'Logout successful.',
+    'not_found' => 'The requested resource was not found.',
     'register' => 'User registered successfully.',
     'role_assigned' => 'Role assigned successfully.',
     'role_removed' => 'Role removed successfully.',
@@ -29,13 +30,12 @@ return [
     'status_updated' => ':resource status updated successfully.',
     'task_assigned' => 'Task assigned successfully.',
     'task_unassigned' => 'Task unassigned successfully.',
+    'too_many_requests' => 'Too many requests. Please try again in :seconds seconds.',
+    'unauthenticated' => 'Unauthenticated.',
+    'unauthorized' => 'This action is unauthorized.',
     'updated' => ':resource updated successfully.',
     'uploaded' => ':resource uploaded successfully.',
+    'server_error' => 'An internal server error occurred.',
 
-    'not_found' => 'The requested resource was not found.',
-    'forbidden' => 'You do not have permission to perform this action.',
-    'unauthorized' => 'Authentication is required to access this resource.',
-    'server' => 'An internal server error occurred.',
-    'exception' => 'An internal server error occurred.',
 
 ];

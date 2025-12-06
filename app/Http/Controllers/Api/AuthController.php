@@ -42,7 +42,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => __('api.invalid_credentials'),
-            ], 401);
+            ], 422);
         }
         $user = Auth::user();
         $token = $user->createToken('api_token')->plainTextToken;

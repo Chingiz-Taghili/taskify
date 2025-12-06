@@ -14,12 +14,13 @@ return [
     */
 
     'child_not_found' => ':child bu :parent obyektində tapılmadı.',
-    'created' => ':resource uğurla yaradıldı.',
+    'created' => ':resource uğurla əlavə edildi.',
     'deleted' => ':resource uğurla silindi.',
     'fetched' => ':resource uğurla əldə edildi.',
     'invalid_credentials' => 'Daxil edilən məlumatlar yanlışdır.',
     'login' => 'Uğurla daxil olundu.',
     'logout' => 'Uğurla çıxış edildi.',
+    'not_found' => 'Sorğu edilən resurs tapılmadı.',
     'register' => 'Qeydiyyat uğurla tamamlandı.',
     'role_assigned' => 'Rol təyinatı uğurla tamamlandı.',
     'role_removed' => 'Rol təyinatı uğurla ləğv edildi.',
@@ -29,13 +30,12 @@ return [
     'status_updated' => ':resource statusu uğurla yeniləndi.',
     'task_assigned' => 'Tapşırığa təyinat uğurla tamamlandı.',
     'task_unassigned' => 'Tapşırıqdan çıxarma uğurla tamamlandı.',
+    'too_many_requests' => 'Çox sayda sorğu. :seconds saniyə sonra yenidən cəhd edin.',
+    'unauthenticated' => 'Giriş edilməyib.',
+    'unauthorized' => 'Bu əməliyyata icazəniz yoxdur.',
     'updated' => ':resource uğurla yeniləndi.',
     'uploaded' => ':resource uğurla yükləndi.',
+    'server_error' => 'Daxili server xətası baş verdi.',
 
-    'not_found' => 'Tələb olunan resurs tapılmadı.',
-    'forbidden' => 'Bu əməliyyatı yerinə yetirmək üçün icazəniz yoxdur.',
-    'unauthorized' => 'Bu resursa daxil olmaq üçün autentifikasiya tələb olunur.',
-    'server' => 'Daxili server xətası baş verdi.',
-    'exception' => 'Daxili server xətası baş verdi.',
 
 ];
