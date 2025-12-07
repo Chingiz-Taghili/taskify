@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -61,6 +62,11 @@ return Application::configure(basePath: dirname(__DIR__))
                         'success' => false,
                         'message' => __('api.not_found')
                     ], 404);
+                }
+
+                // 422 - Validation (Let Laravel handle)
+                if ($e instanceof ValidationException) {
+                    return null;
                 }
 
                 // 429 - Rate Limiting
