@@ -30,6 +30,9 @@ class AuthController extends Controller
         $user->assignRole('user');
         $token = $user->createToken('api_token')->plainTextToken;
 
+        activity()->causedBy($user)->withProperties(['ip' => $request->ip()])
+            ->useLog('auth')->log("{$user->name} {$user->surname} registered");
+
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))
             ->additional(['success' => true, 'message' => __('api.register'),
@@ -46,6 +49,9 @@ class AuthController extends Controller
         }
         $user = Auth::user();
         $token = $user->createToken('api_token')->plainTextToken;
+
+        activity()->causedBy($user)->withProperties(['ip' => $request->ip()])
+            ->useLog('auth')->log("{$user->name} {$user->surname} logged in");
 
         return UserResource::make($user->load(['roles',
             'tasks.assignment.assignedBy', 'projects', 'clientsViaTask', 'clientsViaProject']))

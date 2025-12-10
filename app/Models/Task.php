@@ -11,12 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Task extends Model
 {
-    use HasFactory, SoftDeletes, EagerLoadPivotTrait, HasRelationships;
+    use HasFactory, SoftDeletes, EagerLoadPivotTrait, HasRelationships, LogsActivity;
 
     protected $fillable = [
         'client_id', 'project_id', 'category_id', 'title',
@@ -79,6 +81,17 @@ class Task extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Task::class, 'parent_task_id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['client_id', 'project_id', 'category_id', 'title',
+                'description', 'status', 'parent_task_id', 'due_date'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('task')
+            ->setDescriptionForEvent(fn(string $event) => "Task {$event}");
     }
 
     protected static function booted(): void

@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes, HasRelationships;
+    use HasFactory, SoftDeletes, HasRelationships, LogsActivity;
 
     protected $fillable = ['name', 'description',];
 
@@ -30,6 +32,16 @@ class Category extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'description'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('category')
+            ->setDescriptionForEvent(fn(string $event) => "Category {$event}");
     }
 
     protected static function booted(): void

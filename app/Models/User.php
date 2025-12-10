@@ -12,6 +12,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -19,8 +22,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, SoftDeletes,
-        HasRoles, EagerLoadPivotTrait, HasRelationships;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles,
+        EagerLoadPivotTrait, HasRelationships, LogsActivity, CausesActivity;
 
     protected $fillable = [
         'name', 'surname', 'email', 'password',
@@ -76,6 +79,17 @@ class User extends Authenticatable
     {
         return $this->hasManyDeepFromRelations(
             $this->projects(), (new Project())->client())->distinct();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'surname', 'email',
+                'profile_photo', 'job_title', 'phone_number'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('user')
+            ->setDescriptionForEvent(fn(string $event) => "User {$event}");
     }
 
     protected static function booted(): void

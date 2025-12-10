@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Client extends Model
 {
-    use HasFactory, SoftDeletes, HasRelationships;
+    use HasFactory, SoftDeletes, HasRelationships, LogsActivity;
 
     protected $fillable = ['name', 'logo', 'notes',];
 
@@ -72,5 +74,15 @@ class Client extends Model
     {
         return $this->hasManyDeepFromRelations($this->projects(),
             (new Project())->tasks(), (new Task())->users())->distinct();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'logo', 'notes'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('client')
+            ->setDescriptionForEvent(fn(string $event) => "Client {$event}");
     }
 }
