@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // -------------------- admin|superadmin only --------------------
     Route::middleware('role:admin|superadmin')->group(function () {
+        Route::get('activities', [ActivityLogController::class, 'index']);
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('clients', ClientController::class);
         Route::apiResource('projects', ProjectController::class);

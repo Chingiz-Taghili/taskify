@@ -60,6 +60,9 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
+        activity()->causedBy($request->user())->withProperties(['ip' => $request->ip()])
+            ->useLog('auth')->log("{$request->user()->name} {$request->user()->surname} logged out");
+
         $request->user()->currentAccessToken()->delete();
         return response()->json(['success' => true, 'message' => __('api.logout'),]);
     }
