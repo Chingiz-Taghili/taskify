@@ -9,7 +9,7 @@ use App\Http\Resources\ActivityResource;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 
-class ActivityLogController extends Controller
+class ActivityController extends Controller
 {
     public function index(ActivityFilterRequest $request)
     {
@@ -21,11 +21,13 @@ class ActivityLogController extends Controller
             // Filters
             ->when($request->query('causer_id'),
                 fn($q, $causer_id) => $q->where('causer_id', $causer_id))
-            ->when($request->filled(['subject_type', 'subject_id']),
+            ->when($request->filled('subject_type'),
                 function ($q) use ($request) {
-                $fullType = SubjectType::from($request->query('subject_type'))->fullType();
-                $q->where('subject_type', $fullType)->where('subject_id', $request->query('subject_id'));
+                    $type = SubjectType::from($request->query('subject_type'))->toFullType();
+                    $q->where('subject_type', $type);
                 })
+            ->when($request->filled('subject_id'),
+                fn($q) => $q->where('subject_id', $request->subject_id))
             ->when($request->query('log_name'),
                 fn($q, $log_name) => $q->where('log_name', $log_name))
             ->when($request->query('event'),
